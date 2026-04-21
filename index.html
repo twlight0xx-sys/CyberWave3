@@ -5,20 +5,19 @@
     <meta name="referrer" content="no-referrer">
     <title>Classes</title>
     <link rel="icon" type="image/x-icon" href="https://ssl.gstatic.com/classroom/favicon.png">
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500&display=swap" rel="stylesheet">
     
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
     <style>
-        /* THE ULTIMATE SHARP RESET */
+        /* THE SHARP RULE: 0PX RADIUS ONLY */
         * { 
             box-sizing: border-box; 
             margin: 0; 
             padding: 0; 
             border-radius: 0px !important; 
             -webkit-border-radius: 0px !important;
-            border-radius: 0 !important;
             text-decoration: none !important;
             outline: none !important;
         }
@@ -40,48 +39,76 @@
             font-family: 'Lexend', sans-serif;
         }
 
-        /* Gatekeeper */
+        /* Gatekeeper - Lexend Medium for Inputs */
         #gatekeeper { display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; position: fixed; top: 0; left: 0; z-index: 9999; background: var(--bg); }
-        .auth-box { width: 400px; padding: 40px; background: #000; border: 2px solid var(--neon-green); text-align: center; }
-        input, textarea { width: 100%; padding: 14px; background: #000; border: 1px solid #30363d; color: var(--neon-green); margin-bottom: 12px; font-size: 12px; }
+        .auth-box { width: 420px; padding: 40px; background: #000; border: 2px solid var(--neon-green); text-align: center; }
+        
+        .auth-box input { 
+            width: 100%; 
+            padding: 14px; 
+            background: #000; 
+            border: 1px solid #30363d; 
+            color: var(--neon-green); 
+            margin-bottom: 12px; 
+            font-family: 'Lexend', sans-serif;
+            font-weight: 500; /* Lexend Medium */
+            font-size: 13px;
+        }
+        
+        .auth-btns { display: flex; gap: 10px; margin-top: 10px; }
+        .btn-auth { flex: 1; padding: 14px; cursor: pointer; font-weight: bold; text-transform: uppercase; border: none; font-size: 11px; }
+        .btn-mount { background: var(--neon-green); color: #000; }
+        .btn-create { background: transparent; border: 1px solid var(--electric-blue); color: var(--electric-blue); }
 
-        /* Workspace */
+        /* Workspace Layout */
         #app { display: none; height: 100vh; width: 100%; }
         .shell { display: flex; height: 100vh; }
         
-        /* SIDEBAR UPDATED WITH TEXT THINGY */
-        .side-bar { width: 320px; background: var(--sidebar); border-right: 1px solid #161b22; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
-        .sidebar-label { color: var(--neon-green); font-size: 10px; letter-spacing: 2px; font-weight: bold; }
+        /* Sidebars */
+        .side-bar { width: 300px; background: var(--sidebar); border-right: 1px solid #161b22; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+        
+        /* The New Right Side Utility Bar (Text Thingy + Search) */
+        #utility-bar { 
+            width: 320px; 
+            background: var(--sidebar); 
+            border-left: 1px solid #161b22; 
+            padding: 20px; 
+            display: none; /* Hidden by default */
+            flex-direction: column; 
+            gap: 15px; 
+        }
+
+        .sidebar-label { color: var(--neon-green); font-size: 9px; letter-spacing: 2px; font-weight: bold; text-transform: uppercase; }
 
         /* Chat Integration */
-        .chat-container { height: 40%; background: #000; border: 1px solid #161b22; display: flex; flex-direction: column; overflow: hidden; }
+        .chat-container { flex: 1; background: #000; border: 1px solid #161b22; display: flex; flex-direction: column; overflow: hidden; }
         #chat-messages { flex: 1; padding: 10px; overflow-y: auto; font-size: 11px; color: #ccc; }
-        .msg { margin-bottom: 8px; border-left: 2px solid var(--electric-blue); padding-left: 8px; }
         .chat-input-area { display: flex; border-top: 1px solid #161b22; }
-        #msg-input { flex: 1; background: transparent; border: none; padding: 8px; color: #fff; font-size: 11px; margin: 0; }
+        #msg-input { flex: 1; background: transparent; border: none; padding: 8px; color: #fff; font-size: 11px; }
         #send-btn { background: var(--electric-blue); color: #000; border: none; padding: 0 10px; cursor: pointer; font-size: 10px; font-weight: bold; }
 
-        /* THE TEXT THINGY (Notepad) */
-        .notepad-container { flex: 1; background: #000; border: 1px solid #161b22; display: flex; flex-direction: column; }
-        #notepad { flex: 1; background: transparent; border: none; padding: 10px; color: var(--cyber-cyan); font-size: 11px; resize: none; width: 100%; height: 100%; margin: 0; }
+        /* Sidebar Search Box */
+        .side-search { background: #080a10; border: 1px solid var(--electric-blue); padding: 10px; font-size: 12px; color: #fff; width: 100%; }
 
-        /* Main Area */
+        /* Notepad */
+        .notepad-container { flex: 1; background: #000; border: 1px solid #161b22; display: flex; flex-direction: column; }
+        #notepad { flex: 1; background: transparent; border: none; padding: 10px; color: var(--cyber-cyan); font-size: 11px; resize: none; }
+
+        /* Main Content Area */
         .main-content { flex: 1; padding: 60px; overflow-y: auto; background-image: radial-gradient(#161b22 1px, transparent 1px); background-size: 30px 30px; }
         
-        /* Search Bar Area */
-        .search-box { background: #000; border: 2px solid var(--electric-blue); padding: 20px; margin-bottom: 30px; }
-        .search-input { width: 100%; padding: 15px; background: #080a10; border: 1px solid #161b22; color: #fff; font-size: 14px; }
+        /* Header & Toggles */
+        .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        .btn-toggle-util { background: transparent; border: 1px solid var(--electric-blue); color: var(--electric-blue); padding: 8px 15px; cursor: pointer; font-size: 10px; font-weight: bold; }
 
-        /* Educational Games Group */
+        /* Educational Section */
         .collapsible-container { background: #000; border: 1px solid #30363d; border-top: 3px solid var(--cyber-cyan); }
-        .collapsible-header { width: 100%; padding: 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: transparent; border: none; font-weight: bold; font-size: 14px; color: #FFFFFF !important; } /* FORCED WHITE */
+        .collapsible-header { width: 100%; padding: 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: transparent; border: none; font-weight: bold; font-size: 14px; color: #FFFFFF !important; }
         .collapsible-content { display: none; padding: 0 20px 20px 20px; border-top: 1px solid #30363d; background: #000; }
         
         .game-row { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid #161b22; }
         .game-title span { color: var(--cyber-cyan); font-size: 16px; font-weight: bold; }
-        
         .btn-launch { background: transparent; border: 2px solid var(--electric-blue); color: var(--electric-blue); padding: 10px 24px; cursor: pointer; font-size: 11px; font-weight: bold; }
-        .btn-launch:hover { background: var(--electric-blue); color: #000; }
 
         /* Ghosting */
         #ghost-shield { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; }
@@ -96,52 +123,54 @@
         <h1 style="color:var(--neon-green); font-size: 24px; letter-spacing: 4px; margin-bottom: 30px;">CYBERWAVE</h1>
         <input type="text" id="user_id" placeholder="NODE_ID">
         <input type="password" id="sec_str" placeholder="PASS_KEY">
-        <button class="btn-login" onclick="login()">[ MOUNT_SYSTEM ]</button>
+        <div class="auth-btns">
+            <button class="btn-auth btn-mount" onclick="login()">Mount System</button>
+            <button class="btn-auth btn-create" onclick="alert('Database connection required for unique registration.')">Create Account</button>
+        </div>
     </div>
 </div>
 
 <div id="app">
     <div class="shell">
         <div class="side-bar">
-            <p class="sidebar-label">NODE_COMMS</p>
+            <p class="sidebar-label">Comms_Feed</p>
             <div class="chat-container">
                 <div id="chat-messages"></div>
                 <div class="chat-input-area">
-                    <input type="text" id="msg-input" placeholder="Signal..." maxlength="100">
+                    <input type="text" id="msg-input" placeholder="Signal...">
                     <button id="send-btn">SEND</button>
                 </div>
             </div>
-
-            <p class="sidebar-label">LOCAL_SCRATCHPAD</p>
-            <div class="notepad-container">
-                <textarea id="notepad" placeholder="Type notes here... (Clears on refresh)"></textarea>
-            </div>
-
             <button style="background:transparent; border:1px solid var(--bright-red); color:var(--bright-red); padding:10px; cursor:pointer; font-size: 10px; font-weight: bold;" onclick="location.reload()">TERMINATE</button>
         </div>
 
         <div class="main-content">
-            <h1 style="font-size: 26px; margin-bottom: 20px;">Terminal Search</h1>
-
-            <div class="search-box">
-                <input type="text" id="search-bar" class="search-input" placeholder="Proxy Search Query..." onkeydown="if(event.key==='Enter') proxySearch()">
+            <div class="top-nav">
+                <h1 style="font-size: 26px;">Asset Portal</h1>
+                <button class="btn-toggle-util" onclick="toggleUtility()">Toggle Utility Wing</button>
             </div>
 
             <div class="collapsible-container">
                 <button class="collapsible-header" onclick="toggleCollapsible()">
                     <span>Educational Games</span>
-                    <span id="arrow">▼</span>
+                    <span>▼</span>
                 </button>
                 <div class="collapsible-content" id="assets-list">
                     <div class="game-row">
                         <div class="game-title"><span>Overcloaked</span><p style="color:#444; font-size:10px;">NODE_01</p></div>
                         <button class="btn-launch" onclick="ghostLaunch('https://overdih.netcrypto.org/')">OPEN</button>
                     </div>
-                    <div class="game-row">
-                        <div class="game-title"><span>Overcloaked</span><p style="color:#444; font-size:10px;">NODE_02</p></div>
-                        <button class="btn-launch" onclick="ghostLaunch('https://mathedu.netcrypto.org/')">OPEN</button>
-                    </div>
                 </div>
+            </div>
+        </div>
+
+        <div id="utility-bar">
+            <p class="sidebar-label">Terminal_Search</p>
+            <input type="text" id="side-search-bar" class="side-search" placeholder="Enter URL..." onkeydown="if(event.key==='Enter') proxySearch(this.value)">
+            
+            <p class="sidebar-label" style="margin-top:20px;">Local_Scratchpad</p>
+            <div class="notepad-container">
+                <textarea id="notepad" placeholder="Private notes..."></textarea>
             </div>
         </div>
     </div>
@@ -165,6 +194,11 @@
         document.getElementById('app').style.display = 'block'; 
     }
 
+    function toggleUtility() {
+        const util = document.getElementById('utility-bar');
+        util.style.display = (util.style.display === 'flex') ? 'none' : 'flex';
+    }
+
     document.getElementById('send-btn').onclick = () => {
         const text = document.getElementById('msg-input').value;
         if(text.trim() !== "") {
@@ -176,15 +210,14 @@
     db.limitToLast(20).on("child_added", (snapshot) => {
         const data = snapshot.val();
         const msgDiv = document.createElement("div");
-        msgDiv.className = "msg";
-        msgDiv.innerHTML = `<span style="color:var(--neon-green)">${data.user}:</span><br>${data.msg}`;
+        msgDiv.style.marginBottom = "8px";
+        msgDiv.innerHTML = `<span style="color:var(--neon-green); font-size:10px; font-weight:bold;">${data.user}:</span><br><span style="font-size:11px; color:#ccc;">${data.msg}</span>`;
         document.getElementById('chat-messages').appendChild(msgDiv);
         document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight;
     });
 
-    function proxySearch() {
-        let input = document.getElementById('search-bar').value.trim();
-        if (!input) return;
+    function proxySearch(input) {
+        if (!input.trim()) return;
         let url = input.includes('.') && !input.includes(' ') ? (input.startsWith('http') ? input : 'https://' + input) : 'https://www.google.com/search?q=' + encodeURIComponent(input);
         ghostLaunch('https://overdih.netcrypto.org/proxy/' + url);
     }
@@ -201,10 +234,7 @@
 
     function toggleCollapsible() {
         const content = document.getElementById('assets-list');
-        const arrow = document.getElementById('arrow');
-        const isOpen = content.style.display === "block";
-        content.style.display = isOpen ? "none" : "block";
-        arrow.style.transform = isOpen ? "rotate(0deg)" : "rotate(180deg)";
+        content.style.display = (content.style.display === "block") ? "none" : "block";
     }
 
     window.addEventListener('keydown', (e) => {
