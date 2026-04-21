@@ -2,104 +2,176 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Google Drive - Resources</title>
+    <meta name="referrer" content="no-referrer">
+    
+    <title>Classes</title>
+    <link rel="icon" type="image/x-icon" href="https://ssl.gstatic.com/classroom/favicon.png">
+    
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500&display=swap" rel="stylesheet">
     <style>
-        :root { --green: #00ff41; --blue: #58a6ff; --bg: #0a0e1a; --sidebar: #05070f; --gold: #f4d03f; --red: #ff3333; }
+        :root { --green: #00ff41; --blue: #58a6ff; --bg: #05070a; --sidebar: #020408; --gold: #f4d03f; --red: #ff3333; }
         * { box-sizing: border-box; font-family: 'Lexend', sans-serif; margin: 0; padding: 0; }
         body, html { background: var(--bg); color: #fff; height: 100vh; overflow: hidden; }
 
-        /* Login Screen */
-        #gatekeeper { display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; position: fixed; top: 0; left: 0; z-index: 999; background: var(--bg); }
-        .auth-box { width: 380px; padding: 40px; background: #05070f; border: 1px solid #1a2234; border-radius: 12px; text-align: center; }
-        input { width: 100%; padding: 12px; background: #000; border: 1px solid #1a2234; color: #fff; border-radius: 6px; margin-bottom: 15px; outline: none; }
-        .btn-login { width: 100%; padding: 12px; border-radius: 6px; cursor: pointer; border: 2px solid var(--blue); background: transparent; color: var(--blue); font-weight: bold; }
+        /* Security Gate */
+        #gatekeeper { display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; position: fixed; top: 0; left: 0; z-index: 9999; background: var(--bg); }
+        .auth-box { width: 400px; padding: 40px; background: #010204; border: 1px solid #161b22; border-radius: 4px; text-align: center; border-top: 4px solid var(--green); }
+        input { width: 100%; padding: 14px; background: #000; border: 1px solid #30363d; color: var(--green); border-radius: 4px; margin-bottom: 12px; outline: none; font-size: 12px; }
+        .btn { width: 100%; padding: 14px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 10px; border: none; letter-spacing: 1px; }
+        .btn-reg { background: transparent; color: #30363d; border: 1px solid #30363d; font-size: 10px; }
+        .btn-login { background: var(--green); color: #000; }
 
-        /* App Layout */
+        /* Workspace */
         #app { display: none; height: 100vh; width: 100%; }
         .shell { display: flex; height: 100vh; }
-        .side-bar { width: 250px; background: var(--sidebar); border-right: 1px solid #1a2234; padding: 30px 20px; display: flex; flex-direction: column; }
-        .nav-link { padding: 12px; border-radius: 8px; cursor: pointer; color: #444; margin-bottom: 10px; transition: 0.2s; }
-        .nav-link.active { background: rgba(0, 255, 101, 0.05); color: var(--green); border: 1px solid var(--green); }
-        .main-content { flex: 1; padding: 50px; }
+        .side-bar { width: 320px; background: var(--sidebar); border-right: 1px solid #161b22; padding: 25px; display: flex; flex-direction: column; }
+        
+        /* Chat Section */
+        .chat-container { flex: 1; margin-top: 25px; background: #000; border: 1px solid #161b22; border-radius: 4px; display: flex; flex-direction: column; }
+        .chat-title { background: #161b22; color: var(--blue); font-size: 9px; padding: 8px; text-align: center; font-weight: bold; }
+        .chat-embed { flex: 1; display: flex; align-items: center; justify-content: center; color: #161b22; font-size: 10px; }
 
-        /* Game Containers */
-        .node-container { background: #0d1117; border: 1px solid #30363d; border-radius: 12px; overflow: hidden; }
-        .node-row { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid #1a2234; }
-        .btn-launch { background: var(--blue); color: #000; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; border: none; }
+        .main-content { flex: 1; padding: 60px; overflow-y: auto; background-image: radial-gradient(#161b22 1px, transparent 1px); background-size: 30px 30px; }
+        .status-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 1px solid #30363d; padding-bottom: 20px; }
+        
+        .node-card { background: rgba(13, 17, 23, 0.9); border: 1px solid #30363d; border-radius: 8px; padding: 25px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .btn-action { background: transparent; border: 1px solid var(--blue); color: var(--blue); padding: 10px 25px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn-action:hover { background: var(--blue); color: #000; box-shadow: 0 0 20px rgba(88, 166, 255, 0.4); }
 
-        /* INTERNAL SHIELD (This keeps the game inside Cyberwave) */
-        #shield { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 1000; }
-        #shield iframe { width: 100%; height: 100%; border: none; }
-        .close-shield { position: fixed; top: 20px; right: 20px; background: var(--red); color: #fff; padding: 10px; border-radius: 5px; cursor: pointer; z-index: 1001; font-weight: bold; }
+        /* GHOST SHIELD */
+        #ghost-shield { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; }
+        #ghost-shield iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
 
 <div id="gatekeeper">
     <div class="auth-box">
-        <h1 style="color:var(--green); margin-bottom: 20px;">CYBERWAVE</h1>
-        <input type="text" id="user_id" placeholder="IDENTITY">
-        <input type="password" id="sec_str" placeholder="SEC_STRING">
-        <button class="btn-login" onclick="login()">EXECUTE_LOGIN</button>
+        <h1 style="color:var(--green); font-size: 20px; margin-bottom: 5px;">CYBERWAVE</h1>
+        <p style="color:#30363d; font-size: 10px; margin-bottom: 25px;">RESTRICTED ASSET PORTAL</p>
+        <input type="text" id="user_id" placeholder="NODE_ID" autocomplete="off">
+        <input type="password" id="sec_str" placeholder="PASS_KEY" autocomplete="off">
+        <button class="btn btn-login" onclick="login()">[ MOUNT SYSTEM ]</button>
+        <button class="btn btn-reg" onclick="registerAccount()">GENERATE NEW IDENTITY</button>
     </div>
 </div>
 
 <div id="app">
     <div class="shell">
         <div class="side-bar">
-            <h2 style="color:var(--green); margin-bottom: 30px;">CYBERWAVE</h2>
-            <div class="nav-link active">🎮 EDUCATIONAL GAMES</div>
-            <div class="nav-link" style="margin-top: auto; color: var(--red);" onclick="location.reload()">TERMINATE</div>
-        </div>
-        <div class="main-content">
-            <h1>Curated Learning Modules</h1>
-            <br>
-            <div class="node-container">
-                <div class="node-row">
-                    <span>Module: Advanced Mathematics</span>
-                    <button class="btn-launch" onclick="launch('https://overdih.netcrypto.org/')">PLAY INTERNAL</button>
+            <h2 style="color:var(--green); font-size: 14px;">TERMINAL_SESS</h2>
+            <div class="chat-container">
+                <div class="chat-title">SECURE_COMMS</div>
+                <div class="chat-embed" id="chat-target">
+                    <p>SIGNAL_WAITING...</p>
                 </div>
+            </div>
+            <button class="btn btn-reg" style="margin-top: 20px; border-color: var(--red); color: var(--red);" onclick="location.reload()">WIPE SESSION</button>
+        </div>
+
+        <div class="main-content">
+            <div class="status-header">
+                <div>
+                    <h1 style="font-size: 24px;">Educational Games</h1>
+                    <p style="color: var(--green); font-size: 10px;">ASSET STATUS: UNLOCKED</p>
+                </div>
+                <div style="text-align: right; color: #30363d; font-size: 10px;">
+                    IP: PROTECTED<br>DNS: ENCRYPTED
+                </div>
+            </div>
+
+            <div class="node-card">
+                <div>
+                    <h3 style="color: var(--blue);">Overcloaked</h3>
+                    <p style="color: #444; font-size: 11px;">Primary Stealth Logic Node</p>
+                </div>
+                <button class="btn-action" onclick="ghostLaunch('aHR0cHM6Ly9vdmVyZGloLm5ldGNyeXB0by5vcmcv')">OPEN TUNNEL</button>
+            </div>
+
+            <div class="node-card">
+                <div>
+                    <h3 style="color: var(--blue);">Educational Game 2</h3>
+                    <p style="color: #444; font-size: 11px;">Secondary Calculation Module</p>
+                </div>
+                <button class="btn-action" onclick="ghostLaunch('aHR0cHM6Ly9tYXRoZWR1Lm5ldGNyeXB0by5vcmcv')">OPEN TUNNEL</button>
+            </div>
+
+            <div id="root-console" style="display:none; margin-top: 50px;">
+                <h2 style="color:var(--gold); font-size: 14px; border-bottom: 1px solid var(--gold); padding-bottom: 5px;">IDENTITY_DATABASE</h2>
+                <div id="user-db" style="margin-top: 15px;"></div>
             </div>
         </div>
     </div>
 </div>
 
-<div id="shield">
-    <div class="close-shield" onclick="closeShield()">CLOSE (ESC)</div>
-    <iframe id="shield-frame"></iframe>
+<div id="ghost-shield">
+    <iframe id="ghost-frame"></iframe>
 </div>
 
 <script>
     const ROOT_USER = "_techrobyte";
     const ROOT_PASS = "_techyy";
 
-    function login() {
-        const u = document.getElementById('user_id').value;
+    function registerAccount() {
+        const u = document.getElementById('user_id').value.trim();
         const p = document.getElementById('sec_str').value;
-        if (u === ROOT_USER && p === ROOT_PASS) {
-            document.getElementById('gatekeeper').style.display = 'none';
-            document.getElementById('app').style.display = 'block';
-        } else {
-            alert("DENIED");
+        if(!u || !p) return;
+        localStorage.setItem('cw_' + u, btoa(p));
+        alert("ID Generated.");
+    }
+
+    function login() {
+        const u = document.getElementById('user_id').value.trim();
+        const p = document.getElementById('sec_str').value;
+        if (u === ROOT_USER && p === ROOT_PASS) return enterApp(true);
+        const stored = localStorage.getItem('cw_' + u);
+        if (stored && atob(stored) === p) return enterApp(false);
+        alert("AUTH_FAIL");
+    }
+
+    function enterApp(isRoot) {
+        document.getElementById('gatekeeper').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        if (isRoot) {
+            document.getElementById('root-console').style.display = 'block';
+            renderUsers();
         }
     }
 
-    function launch(url) {
-        document.getElementById('shield-frame').src = url;
-        document.getElementById('shield').style.display = 'block';
+    function ghostLaunch(encodedUrl) {
+        const url = atob(encodedUrl);
+        const shield = document.getElementById('ghost-shield');
+        const frame = document.getElementById('ghost-frame');
+        shield.style.display = 'block';
+        frame.src = url;
     }
 
-    function closeShield() {
-        document.getElementById('shield').style.display = 'none';
-        document.getElementById('shield-frame').src = '';
+    function closeGhost() {
+        document.getElementById('ghost-shield').style.display = 'none';
+        document.getElementById('ghost-frame').src = 'about:blank';
     }
 
+    function renderUsers() {
+        const list = document.getElementById('user-db');
+        list.innerHTML = "";
+        for (let i = 0; i < localStorage.length; i++) {
+            const k = localStorage.key(i);
+            if (k.startsWith('cw_')) {
+                const u = k.replace('cw_', '');
+                list.innerHTML += `<div style="padding:10px; border:1px solid #161b22; margin-bottom:5px; display:flex; justify-content:space-between; font-size:11px;"><span>ID: ${u}</span><span style="color:var(--red); cursor:pointer;" onclick="delUser('${u}')">[DEL]</span></div>`;
+            }
+        }
+    }
+
+    function delUser(u) { localStorage.removeItem('cw_' + u); renderUsers(); }
+
+    // THE PANIC SYSTEM
     window.addEventListener('keydown', (e) => {
         if (e.key === "Escape") {
-            if (document.getElementById('shield').style.display === 'block') {
-                closeShield();
+            if (document.getElementById('ghost-shield').style.display === 'block') {
+                closeGhost();
             } else {
+                // Instantly teleport to Google Classroom
                 window.location.replace("https://classroom.google.com");
             }
         }
