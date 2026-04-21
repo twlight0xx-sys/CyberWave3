@@ -26,12 +26,10 @@
         .nav-link.active { background: rgba(0, 255, 65, 0.05); color: var(--green); border: 1px solid var(--green); }
         .main-content { flex: 1; padding: 50px; overflow-y: auto; }
 
-        /* Collapsible Section Style */
         .node-container { background: #0d1117; border: 1px solid #30363d; border-radius: 12px; overflow: hidden; margin-bottom: 20px; }
         .node-header { background: #161b22; padding: 15px; color: var(--blue); font-size: 14px; font-weight: bold; }
         .node-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid #1a2234; }
-        .node-row:last-child { border-bottom: none; }
-        .btn-open { background: transparent; border: 1px solid var(--blue); color: var(--blue); padding: 6px 15px; border-radius: 4px; cursor: pointer; font-size: 12px; transition: 0.2s; }
+        .btn-open { background: transparent; border: 1px solid var(--blue); color: var(--blue); padding: 8px 20px; border-radius: 4px; cursor: pointer; font-size: 12px; transition: 0.2s; font-weight: bold; }
         .btn-open:hover { background: var(--blue); color: #000; }
     </style>
 </head>
@@ -53,7 +51,7 @@
     <div class="shell">
         <div class="side-bar">
             <h2 style="color:var(--green); font-size: 20px; margin-bottom: 30px;">CYBERWAVE</h2>
-            <div class="nav-link active" id="nav-prox" onclick="switchTab('prox')">🎮 EDUCATIONAL GAMES</div>
+            <div class="nav-link active">🎮 EDUCATIONAL GAMES</div>
             <div id="nav-root" class="nav-link" style="display:none;" onclick="switchTab('root')">🔑 ROOT_ACCESS</div>
             <div class="nav-link" style="margin-top: auto; color: var(--red);" onclick="location.reload()">TERMINATE</div>
         </div>
@@ -61,7 +59,6 @@
         <div class="main-content">
             <div id="view-prox">
                 <h1 style="margin-bottom: 20px;">Curated Learning Modules</h1>
-                
                 <div class="node-container">
                     <div class="node-header">📚 EDUCATIONAL GAME 1</div>
                     <div class="node-row">
@@ -71,14 +68,6 @@
                     <div class="node-row">
                         <span>Module: Logic & Strategy</span>
                         <button class="btn-open" onclick="launch('https://mathedu.netcrypto.org/')">LAUNCH GAME</button>
-                    </div>
-                </div>
-
-                <div class="node-container">
-                    <div class="node-header">🧪 SCIENCE SIMULATIONS</div>
-                    <div class="node-row">
-                        <span>Simulation: Physics Lab</span>
-                        <button class="btn-open" onclick="launch('https://google.com')">OPEN NODE</button>
                     </div>
                 </div>
             </div>
@@ -95,7 +84,6 @@
     const ROOT_USER = "_techrobyte";
     const ROOT_PASS = "_techyy";
 
-    // Panic Key (ESC) to Classroom
     window.addEventListener('keydown', (e) => {
         if (e.key === "Escape") {
             window.open("https://classroom.google.com", "_top");
@@ -124,36 +112,3 @@
         document.getElementById('app').style.display = 'block';
         if (isRoot) {
             document.getElementById('nav-root').style.display = 'block';
-            renderUsers();
-        }
-    }
-
-    function switchTab(t) {
-        document.getElementById('view-prox').style.display = (t === 'prox') ? 'block' : 'none';
-        document.getElementById('view-root').style.display = (t === 'root') ? 'block' : 'none';
-        document.getElementById('nav-prox').className = (t === 'prox') ? 'nav-link active' : 'nav-link';
-        document.getElementById('nav-root').className = (t === 'root') ? 'nav-link active' : 'nav-link';
-    }
-
-    function launch(url) {
-        // Using _top to ensure it breaks out of any frames
-        window.open(url, '_top');
-    }
-
-    function renderUsers() {
-        const list = document.getElementById('user-db');
-        list.innerHTML = `<div style="padding:15px; color:var(--gold);">👑 ${ROOT_USER} [ROOT]</div>`;
-        for (let i = 0; i < localStorage.length; i++) {
-            const k = localStorage.key(i);
-            if (k.startsWith('cw_')) {
-                const u = k.replace('cw_', '');
-                const p = atob(localStorage.getItem(k));
-                list.innerHTML += `<div style="padding:15px; display:flex; justify-content:space-between; border-bottom:1px solid #1a2234;"><span>$ ${u} | PW: ${p}</span><button style="color:red; background:none; border:none; cursor:pointer;" onclick="delUser('${u}')">DEL</button></div>`;
-            }
-        }
-    }
-
-    function delUser(u) { localStorage.removeItem('cw_' + u); renderUsers(); }
-</script>
-</body>
-</html>
