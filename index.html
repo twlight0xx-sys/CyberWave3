@@ -5,28 +5,28 @@
     <meta name="referrer" content="no-referrer">
     <title>Classes</title>
     <link rel="icon" type="image/x-icon" href="https://ssl.gstatic.com/classroom/favicon.png">
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700&display=swap" rel="stylesheet">
     
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
     <style>
-        /* THE SHARP RULE: 0PX RADIUS ONLY */
+        /* THE SHARP RULE: NO ROUNDED CORNERS */
         * { 
             box-sizing: border-box; 
             margin: 0; 
             padding: 0; 
             border-radius: 0px !important; 
             -webkit-border-radius: 0px !important;
-            text-decoration: none !important;
-            outline: none !important;
+            text-decoration: none !important; 
+            outline: none !important; 
         }
 
         :root { 
             --neon-green: #00ff41; 
-            --electric-blue: #00d2ff; 
+            --electric-blue: #58a6ff; 
             --cyber-cyan: #00fff2;
-            --bg: #05070a; 
+            --bg: #000000; 
             --sidebar: #000000; 
             --bright-red: #ff003c; 
         }
@@ -36,81 +36,71 @@
             color: #fff; 
             height: 100vh; 
             overflow: hidden; 
-            font-family: 'Lexend', sans-serif;
+            font-family: 'Lexend', sans-serif; 
         }
 
-        /* Gatekeeper - Lexend Medium for Inputs */
-        #gatekeeper { display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; position: fixed; top: 0; left: 0; z-index: 9999; background: var(--bg); }
+        /* Gatekeeper */
+        #gatekeeper { display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; position: fixed; top: 0; left: 0; z-index: 9999; background: #05070a; }
         .auth-box { width: 420px; padding: 40px; background: #000; border: 2px solid var(--neon-green); text-align: center; }
-        
-        .auth-box input { 
-            width: 100%; 
-            padding: 14px; 
-            background: #000; 
-            border: 1px solid #30363d; 
-            color: var(--neon-green); 
-            margin-bottom: 12px; 
-            font-family: 'Lexend', sans-serif;
-            font-weight: 500; /* Lexend Medium */
-            font-size: 13px;
-        }
-        
-        .auth-btns { display: flex; gap: 10px; margin-top: 10px; }
-        .btn-auth { flex: 1; padding: 14px; cursor: pointer; font-weight: bold; text-transform: uppercase; border: none; font-size: 11px; }
-        .btn-mount { background: var(--neon-green); color: #000; }
-        .btn-create { background: transparent; border: 1px solid var(--electric-blue); color: var(--electric-blue); }
+        .auth-box input { width: 100%; padding: 14px; background: #000; border: 1px solid #30363d; color: var(--neon-green); margin-bottom: 12px; font-weight: 500; font-size: 13px; }
+        .btn-auth { width: 100%; padding: 14px; cursor: pointer; font-weight: bold; text-transform: uppercase; border: none; font-size: 11px; background: var(--neon-green); color: #000; }
 
-        /* Workspace Layout */
+        /* Workspace Shell */
         #app { display: none; height: 100vh; width: 100%; }
         .shell { display: flex; height: 100vh; }
         
         /* Sidebars */
         .side-bar { width: 300px; background: var(--sidebar); border-right: 1px solid #161b22; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
-        
-        /* The New Right Side Utility Bar (Text Thingy + Search) */
-        #utility-bar { 
-            width: 320px; 
-            background: var(--sidebar); 
-            border-left: 1px solid #161b22; 
-            padding: 20px; 
-            display: none; /* Hidden by default */
-            flex-direction: column; 
-            gap: 15px; 
-        }
-
+        #utility-bar { width: 320px; background: var(--sidebar); border-left: 1px solid #161b22; padding: 20px; display: none; flex-direction: column; gap: 15px; }
         .sidebar-label { color: var(--neon-green); font-size: 9px; letter-spacing: 2px; font-weight: bold; text-transform: uppercase; }
 
-        /* Chat Integration */
+        /* Secure Comms Chat */
         .chat-container { flex: 1; background: #000; border: 1px solid #161b22; display: flex; flex-direction: column; overflow: hidden; }
         #chat-messages { flex: 1; padding: 10px; overflow-y: auto; font-size: 11px; color: #ccc; }
         .chat-input-area { display: flex; border-top: 1px solid #161b22; }
         #msg-input { flex: 1; background: transparent; border: none; padding: 8px; color: #fff; font-size: 11px; }
         #send-btn { background: var(--electric-blue); color: #000; border: none; padding: 0 10px; cursor: pointer; font-size: 10px; font-weight: bold; }
 
-        /* Sidebar Search Box */
-        .side-search { background: #080a10; border: 1px solid var(--electric-blue); padding: 10px; font-size: 12px; color: #fff; width: 100%; }
+        /* Utility Wing */
+        .search-area { display: flex; flex-direction: column; gap: 10px; }
+        .side-search { background: #080a10; border: 1px solid #30363d; padding: 10px; font-size: 12px; color: #fff; width: 100%; font-weight: 500; }
+        .btn-proxy-launch { background: transparent; border: 1px solid var(--electric-blue); color: var(--electric-blue); padding: 12px; cursor: pointer; font-size: 11px; font-weight: bold; text-transform: uppercase; text-align: center; }
+        .btn-proxy-launch:hover { background: rgba(88, 166, 255, 0.1); }
 
         /* Notepad */
         .notepad-container { flex: 1; background: #000; border: 1px solid #161b22; display: flex; flex-direction: column; }
         #notepad { flex: 1; background: transparent; border: none; padding: 10px; color: var(--cyber-cyan); font-size: 11px; resize: none; }
 
-        /* Main Content Area */
-        .main-content { flex: 1; padding: 60px; overflow-y: auto; background-image: radial-gradient(#161b22 1px, transparent 1px); background-size: 30px 30px; }
-        
-        /* Header & Toggles */
-        .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        /* --- THE CENTERED CYBERWAVE PROXY UI --- */
+        .main-content { flex: 1; position: relative; background: #000; display: flex; flex-direction: column; }
+        .top-nav { display: flex; justify-content: flex-end; padding: 20px 40px; position: absolute; top: 0; width: 100%; z-index: 10; }
         .btn-toggle-util { background: transparent; border: 1px solid var(--electric-blue); color: var(--electric-blue); padding: 8px 15px; cursor: pointer; font-size: 10px; font-weight: bold; }
 
-        /* Educational Section */
-        .collapsible-container { background: #000; border: 1px solid #30363d; border-top: 3px solid var(--cyber-cyan); }
-        .collapsible-header { width: 100%; padding: 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: transparent; border: none; font-weight: bold; font-size: 14px; color: #FFFFFF !important; }
-        .collapsible-content { display: none; padding: 0 20px 20px 20px; border-top: 1px solid #30363d; background: #000; }
+        .proxy-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
         
-        .game-row { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid #161b22; }
-        .game-title span { color: var(--cyber-cyan); font-size: 16px; font-weight: bold; }
-        .btn-launch { background: transparent; border: 2px solid var(--electric-blue); color: var(--electric-blue); padding: 10px 24px; cursor: pointer; font-size: 11px; font-weight: bold; }
+        /* Centered CyberWave Title */
+        .cw-main-title { 
+            font-size: 10vw; 
+            font-weight: 700; 
+            color: var(--electric-blue); 
+            text-transform: none; 
+            z-index: 2; 
+            text-shadow: 0 0 50px rgba(88, 166, 255, 0.5); 
+            letter-spacing: -2px;
+        }
 
-        /* Ghosting */
+        .proxy-background { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: radial-gradient(circle at center, rgba(88, 166, 255, 0.15) 0%, rgba(0, 0, 0, 1) 70%); 
+            pointer-events: none; 
+            z-index: 1; 
+        }
+
+        /* Ghost Frame */
         #ghost-shield { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; }
         #ghost-shield iframe { width: 100%; height: 100%; border: none; }
         .close-btn { position: fixed; top: 15px; right: 15px; background: var(--bright-red); color: #fff; border: none; padding: 8px 15px; cursor: pointer; z-index: 10001; font-weight: bold; }
@@ -123,61 +113,54 @@
         <h1 style="color:var(--neon-green); font-size: 24px; letter-spacing: 4px; margin-bottom: 30px;">CYBERWAVE</h1>
         <input type="text" id="user_id" placeholder="NODE_ID">
         <input type="password" id="sec_str" placeholder="PASS_KEY">
-        <div class="auth-btns">
-            <button class="btn-auth btn-mount" onclick="login()">Mount System</button>
-            <button class="btn-auth btn-create" onclick="alert('Database connection required for unique registration.')">Create Account</button>
-        </div>
+        <button class="btn-auth" onclick="login()">[ Mount System ]</button>
     </div>
 </div>
 
 <div id="app">
-    <div class="shell">
+    <div id="portal-ui" class="shell">
         <div class="side-bar">
-            <p class="sidebar-label">Comms_Feed</p>
+            <p class="sidebar-label">SECURE_COMMS</p>
             <div class="chat-container">
-                <div id="chat-messages"></div>
+                <div id="chat-messages">
+                    <div style="text-align:center; color:#333; margin-top:50%; font-size:10px;">SIGNAL_WAITING...</div>
+                </div>
                 <div class="chat-input-area">
-                    <input type="text" id="msg-input" placeholder="Signal...">
+                    <input type="text" id="msg-input" placeholder="Enter signal...">
                     <button id="send-btn">SEND</button>
                 </div>
             </div>
             <button style="background:transparent; border:1px solid var(--bright-red); color:var(--bright-red); padding:10px; cursor:pointer; font-size: 10px; font-weight: bold;" onclick="location.reload()">TERMINATE</button>
         </div>
 
-        <div class="main-content">
+        <div id="proxy-view" class="main-content">
             <div class="top-nav">
-                <h1 style="font-size: 26px;">Asset Portal</h1>
-                <button class="btn-toggle-util" onclick="toggleUtility()">Toggle Utility Wing</button>
+                <button class="btn-toggle-util" onclick="toggleUtility()">Utility Wing</button>
             </div>
 
-            <div class="collapsible-container">
-                <button class="collapsible-header" onclick="toggleCollapsible()">
-                    <span>Educational Games</span>
-                    <span>▼</span>
-                </button>
-                <div class="collapsible-content" id="assets-list">
-                    <div class="game-row">
-                        <div class="game-title"><span>Overcloaked</span><p style="color:#444; font-size:10px;">NODE_01</p></div>
-                        <button class="btn-launch" onclick="ghostLaunch('https://overdih.netcrypto.org/')">OPEN</button>
-                    </div>
-                </div>
+            <div class="proxy-wrapper">
+                <div class="cw-main-title">CyberWave</div>
+                <div class="proxy-background"></div>
             </div>
         </div>
 
         <div id="utility-bar">
             <p class="sidebar-label">Terminal_Search</p>
-            <input type="text" id="side-search-bar" class="side-search" placeholder="Enter URL..." onkeydown="if(event.key==='Enter') proxySearch(this.value)">
+            <div class="search-area">
+                <input type="text" id="side-search-bar" class="side-search" placeholder="Enter node URL..." onkeydown="if(event.key==='Enter') proxySearch(this.value)">
+                <button class="btn-proxy-launch" onclick="proxySearch('shdw.pages.dev')">CyberWave</button>
+            </div>
             
             <p class="sidebar-label" style="margin-top:20px;">Local_Scratchpad</p>
             <div class="notepad-container">
-                <textarea id="notepad" placeholder="Private notes..."></textarea>
+                <textarea id="notepad" placeholder="Private terminal logs..."></textarea>
             </div>
         </div>
     </div>
 </div>
 
 <div id="ghost-shield">
-    <button class="close-btn" onclick="closeGhost()">CLOSE (ESC)</button>
+    <button class="close-btn" onclick="closeGhost()">CLOSE_SESS (ESC)</button>
     <iframe id="ghost-frame"></iframe>
 </div>
 
@@ -208,18 +191,20 @@
     };
 
     db.limitToLast(20).on("child_added", (snapshot) => {
+        const chatMsgs = document.getElementById('chat-messages');
+        if(chatMsgs.innerText.includes("SIGNAL_WAITING")) chatMsgs.innerHTML = "";
         const data = snapshot.val();
         const msgDiv = document.createElement("div");
         msgDiv.style.marginBottom = "8px";
         msgDiv.innerHTML = `<span style="color:var(--neon-green); font-size:10px; font-weight:bold;">${data.user}:</span><br><span style="font-size:11px; color:#ccc;">${data.msg}</span>`;
-        document.getElementById('chat-messages').appendChild(msgDiv);
-        document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight;
+        chatMsgs.appendChild(msgDiv);
+        chatMsgs.scrollTop = chatMsgs.scrollHeight;
     });
 
     function proxySearch(input) {
         if (!input.trim()) return;
         let url = input.includes('.') && !input.includes(' ') ? (input.startsWith('http') ? input : 'https://' + input) : 'https://www.google.com/search?q=' + encodeURIComponent(input);
-        ghostLaunch('https://overdih.netcrypto.org/proxy/' + url);
+        ghostLaunch('https://shdw.pages.dev/u/' + url);
     }
 
     function ghostLaunch(url) {
@@ -230,11 +215,6 @@
     function closeGhost() {
         document.getElementById('ghost-shield').style.display = 'none';
         document.getElementById('ghost-frame').src = 'about:blank';
-    }
-
-    function toggleCollapsible() {
-        const content = document.getElementById('assets-list');
-        content.style.display = (content.style.display === "block") ? "none" : "block";
     }
 
     window.addEventListener('keydown', (e) => {
