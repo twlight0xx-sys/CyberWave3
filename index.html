@@ -5,39 +5,77 @@
     <meta name="referrer" content="no-referrer">
     <title>Classes</title>
     <link rel="icon" type="image/x-icon" href="https://ssl.gstatic.com/classroom/favicon.png">
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500&display=swap" rel="stylesheet">
     
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
     <style>
-        /* THE SHARP RULE */
-        * { box-sizing: border-box; margin: 0; padding: 0; border-radius: 0px !important; text-decoration: none !important; outline: none !important; }
+        /* THE SHARP RULE: 0PX RADIUS ONLY */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            border-radius: 0px !important; 
+            -webkit-border-radius: 0px !important;
+            text-decoration: none !important;
+            outline: none !important;
+        }
 
         :root { 
             --neon-green: #00ff41; 
-            --electric-blue: #58a6ff; 
+            --electric-blue: #00d2ff; 
             --cyber-cyan: #00fff2;
-            --bg: #000000; 
+            --bg: #05070a; 
             --sidebar: #000000; 
             --bright-red: #ff003c; 
         }
         
-        body, html { background: var(--bg); color: #fff; height: 100vh; overflow: hidden; font-family: 'Lexend', sans-serif; }
+        body, html { 
+            background: var(--bg); 
+            color: #fff; 
+            height: 100vh; 
+            overflow: hidden; 
+            font-family: 'Lexend', sans-serif;
+        }
 
         /* Gatekeeper */
-        #gatekeeper { display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; position: fixed; top: 0; left: 0; z-index: 9999; background: #05070a; }
+        #gatekeeper { display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; position: fixed; top: 0; left: 0; z-index: 9999; background: var(--bg); }
         .auth-box { width: 420px; padding: 40px; background: #000; border: 2px solid var(--neon-green); text-align: center; }
-        .auth-box input { width: 100%; padding: 14px; background: #000; border: 1px solid #30363d; color: var(--neon-green); margin-bottom: 12px; font-family: 'Lexend', sans-serif; font-weight: 500; font-size: 13px; }
-        .btn-auth { width: 100%; padding: 14px; cursor: pointer; font-weight: bold; text-transform: uppercase; border: none; font-size: 11px; background: var(--neon-green); color: #000; }
+        
+        .auth-box input { 
+            width: 100%; 
+            padding: 14px; 
+            background: #000; 
+            border: 1px solid #30363d; 
+            color: var(--neon-green); 
+            margin-bottom: 12px; 
+            font-family: 'Lexend', sans-serif;
+            font-weight: 500; 
+            font-size: 13px;
+        }
+        
+        .auth-btns { display: flex; gap: 10px; margin-top: 10px; }
+        .btn-auth { flex: 1; padding: 14px; cursor: pointer; font-weight: bold; text-transform: uppercase; border: none; font-size: 11px; }
+        .btn-mount { background: var(--neon-green); color: #000; }
+        .btn-create-acc { background: transparent; border: 1px solid var(--electric-blue); color: var(--electric-blue); }
 
-        /* Workspace Shell */
+        /* Workspace Layout */
         #app { display: none; height: 100vh; width: 100%; }
         .shell { display: flex; height: 100vh; }
         
-        /* Sidebars */
         .side-bar { width: 300px; background: var(--sidebar); border-right: 1px solid #161b22; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
-        #utility-bar { width: 320px; background: var(--sidebar); border-left: 1px solid #161b22; padding: 20px; display: none; flex-direction: column; gap: 15px; }
+        
+        #utility-bar { 
+            width: 320px; 
+            background: var(--sidebar); 
+            border-left: 1px solid #161b22; 
+            padding: 20px; 
+            display: none; 
+            flex-direction: column; 
+            gap: 15px; 
+        }
+
         .sidebar-label { color: var(--neon-green); font-size: 9px; letter-spacing: 2px; font-weight: bold; text-transform: uppercase; }
 
         /* Chat */
@@ -47,17 +85,28 @@
         #msg-input { flex: 1; background: transparent; border: none; padding: 8px; color: #fff; font-size: 11px; }
         #send-btn { background: var(--electric-blue); color: #000; border: none; padding: 0 10px; cursor: pointer; font-size: 10px; font-weight: bold; }
 
-        /* Main Area */
+        .side-search { background: #080a10; border: 1px solid var(--electric-blue); padding: 10px; font-size: 12px; color: #fff; width: 100%; font-family: 'Lexend', sans-serif; font-weight: 500; }
+
+        /* Main Content Area */
         .main-content { flex: 1; padding: 60px; overflow-y: auto; background-image: radial-gradient(#161b22 1px, transparent 1px); background-size: 30px 30px; }
+        
         .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        .nav-btns { display: flex; gap: 10px; }
+        
+        /* THE CREATE BUTTON */
+        .btn-create-asset { background: var(--cyber-cyan); color: #000; border: none; padding: 8px 15px; cursor: pointer; font-size: 10px; font-weight: bold; text-transform: uppercase; }
         .btn-toggle-util { background: transparent; border: 1px solid var(--electric-blue); color: var(--electric-blue); padding: 8px 15px; cursor: pointer; font-size: 10px; font-weight: bold; }
 
-        /* Terminal Search & Buttons */
-        .search-area { display: flex; flex-direction: column; gap: 10px; }
-        .side-search { background: #080a10; border: 1px solid #30363d; padding: 10px; font-size: 12px; color: #fff; font-family: 'Lexend', sans-serif; font-weight: 500; width: 100%; }
-        .btn-proxy-launch { background: transparent; border: 1px solid var(--electric-blue); color: var(--electric-blue); padding: 12px; cursor: pointer; font-size: 11px; font-weight: bold; text-transform: uppercase; text-align: center; }
+        /* Assets Section */
+        .collapsible-container { background: #000; border: 1px solid #30363d; border-top: 3px solid var(--cyber-cyan); }
+        .collapsible-header { width: 100%; padding: 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: transparent; border: none; font-weight: bold; font-size: 14px; color: #FFFFFF !important; }
+        .collapsible-content { display: block; padding: 0 20px 20px 20px; border-top: 1px solid #30363d; background: #000; }
         
-        /* Ghost Shield */
+        .game-row { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid #161b22; }
+        .game-title span { color: var(--cyber-cyan); font-size: 16px; font-weight: bold; }
+        .btn-launch { background: transparent; border: 2px solid var(--electric-blue); color: var(--electric-blue); padding: 10px 24px; cursor: pointer; font-size: 11px; font-weight: bold; }
+
+        /* Ghosting */
         #ghost-shield { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; }
         #ghost-shield iframe { width: 100%; height: 100%; border: none; }
         .close-btn { position: fixed; top: 15px; right: 15px; background: var(--bright-red); color: #fff; border: none; padding: 8px 15px; cursor: pointer; z-index: 10001; font-weight: bold; }
@@ -70,18 +119,21 @@
         <h1 style="color:var(--neon-green); font-size: 24px; letter-spacing: 4px; margin-bottom: 30px;">CYBERWAVE</h1>
         <input type="text" id="user_id" placeholder="NODE_ID">
         <input type="password" id="sec_str" placeholder="PASS_KEY">
-        <button class="btn-auth" onclick="login()">[ Mount System ]</button>
+        <div class="auth-btns">
+            <button class="btn-auth btn-mount" onclick="login()">Mount System</button>
+            <button class="btn-auth btn-create-acc" onclick="alert('Creating Local Instance...')">Create Account</button>
+        </div>
     </div>
 </div>
 
 <div id="app">
     <div class="shell">
         <div class="side-bar">
-            <p class="sidebar-label">SECURE_COMMS</p>
+            <p class="sidebar-label">Comms_Feed</p>
             <div class="chat-container">
-                <div id="chat-messages"><div style="text-align:center; color:#333; margin-top:50%; font-size:10px;">SIGNAL_WAITING...</div></div>
+                <div id="chat-messages"></div>
                 <div class="chat-input-area">
-                    <input type="text" id="msg-input" placeholder="Enter signal...">
+                    <input type="text" id="msg-input" placeholder="Signal...">
                     <button id="send-btn">SEND</button>
                 </div>
             </div>
@@ -91,17 +143,29 @@
         <div class="main-content">
             <div class="top-nav">
                 <h1 style="font-size: 26px;">Asset Portal</h1>
-                <button class="btn-toggle-util" onclick="toggleUtility()">Toggle Utility Wing</button>
+                <div class="nav-btns">
+                    <button class="btn-create-asset" onclick="createAsset()">[+] Create Asset</button>
+                    <button class="btn-toggle-util" onclick="toggleUtility()">Toggle Utility Wing</button>
+                </div>
             </div>
-            <p style="color: #444; font-size: 12px; text-align:center; margin-top: 100px;">PORTAL_STANDBY...</p>
+
+            <div class="collapsible-container">
+                <button class="collapsible-header">
+                    <span>Active Nodes</span>
+                    <span>▼</span>
+                </button>
+                <div class="collapsible-content" id="assets-list">
+                    <div class="game-row">
+                        <div class="game-title"><span>Overcloaked</span><p style="color:#444; font-size:10px;">NODE_01</p></div>
+                        <button class="btn-launch" onclick="ghostLaunch('https://overdih.netcrypto.org/')">OPEN</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div id="utility-bar">
             <p class="sidebar-label">Terminal_Search</p>
-            <div class="search-area">
-                <input type="text" id="side-search-bar" class="side-search" placeholder="Enter custom node..." onkeydown="if(event.key==='Enter') proxySearch(this.value)">
-                <button class="btn-proxy-launch" onclick="proxySearch(document.getElementById('side-search-bar').value)">CyberWave Launch</button>
-            </div>
+            <input type="text" id="side-search-bar" class="side-search" placeholder="Enter URL..." onkeydown="if(event.key==='Enter') proxySearch(this.value)">
             
             <p class="sidebar-label" style="margin-top:20px;">Local_Scratchpad</p>
             <textarea id="notepad" style="flex:1; background:transparent; border:1px solid #161b22; padding:10px; color:var(--cyber-cyan); font-size:11px; resize:none; font-family:'Lexend', sans-serif;" placeholder="Private logs..."></textarea>
@@ -132,6 +196,21 @@
         util.style.display = (util.style.display === 'flex') ? 'none' : 'flex';
     }
 
+    function createAsset() {
+        const name = prompt("Asset Name:");
+        const url = prompt("Node URL:");
+        if (name && url) {
+            const list = document.getElementById('assets-list');
+            const row = document.createElement('div');
+            row.className = 'game-row';
+            row.innerHTML = `
+                <div class="game-title"><span>${name}</span><p style="color:#444; font-size:10px;">USER_NODE</p></div>
+                <button class="btn-launch" onclick="ghostLaunch('${url}')">OPEN</button>
+            `;
+            list.appendChild(row);
+        }
+    }
+
     document.getElementById('send-btn').onclick = () => {
         const text = document.getElementById('msg-input').value;
         if(text.trim() !== "") {
@@ -141,20 +220,17 @@
     };
 
     db.limitToLast(20).on("child_added", (snapshot) => {
-        const chatMsgs = document.getElementById('chat-messages');
-        if(chatMsgs.innerText.includes("SIGNAL_WAITING")) chatMsgs.innerHTML = "";
         const data = snapshot.val();
         const msgDiv = document.createElement("div");
         msgDiv.style.marginBottom = "8px";
         msgDiv.innerHTML = `<span style="color:var(--neon-green); font-size:10px; font-weight:bold;">${data.user}:</span><br><span style="font-size:11px; color:#ccc;">${data.msg}</span>`;
-        chatMsgs.appendChild(msgDiv);
-        chatMsgs.scrollTop = chatMsgs.scrollHeight;
+        document.getElementById('chat-messages').appendChild(msgDiv);
+        document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight;
     });
 
     function proxySearch(input) {
         if (!input.trim()) return;
         let url = input.includes('.') && !input.includes(' ') ? (input.startsWith('http') ? input : 'https://' + input) : 'https://www.google.com/search?q=' + encodeURIComponent(input);
-        // Using the reliable overdih backend
         ghostLaunch('https://overdih.netcrypto.org/proxy/' + url);
     }
 
@@ -169,7 +245,13 @@
     }
 
     window.addEventListener('keydown', (e) => {
-        if (e.key === "Escape") closeGhost();
+        if (e.key === "Escape") {
+            if (document.getElementById('ghost-shield').style.display === 'block') {
+                closeGhost();
+            } else {
+                window.location.replace("https://classroom.google.com");
+            }
+        }
     });
 </script>
 </body>
