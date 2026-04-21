@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Google Drive - Math Resources</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root { --green: #00ff41; --blue: #58a6ff; --bg: #0a0e1a; --sidebar: #05070f; --gold: #f4d03f; --red: #ff3333; }
+        * { box-sizing: border-box; font-family: 'Lexend', sans-serif; font-weight: 500; margin: 0; padding: 0; }
+        body, html { background: var(--bg); color: #fff; height: 100vh; overflow: hidden; }
+
+        /* Login Screen */
+        #gatekeeper { display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; position: fixed; top: 0; left: 0; z-index: 100; background: var(--bg); }
+        .auth-box { width: 380px; padding: 40px; background: rgba(5, 7, 15, 0.95); border: 1px solid #1a2234; border-radius: 12px; box-shadow: 0 0 40px #000; }
+        h1 { color: var(--green); margin: 0 0 20px 0; font-size: 28px; }
+        label { display: block; color: var(--green); margin: 15px 0 5px 0; font-size: 10px; letter-spacing: 1px; }
+        input { width: 100%; padding: 12px; background: #000; border: 1px solid #1a2234; color: #fff; border-radius: 6px; outline: none; margin-bottom: 10px; }
+        .btn { width: 100%; padding: 12px; margin-top: 10px; border-radius: 6px; cursor: pointer; border: 2px solid var(--green); background: transparent; color: var(--green); font-weight: bold; transition: 0.2s; }
+        .btn-auth { border-color: var(--blue); color: var(--blue); }
+
+        /* App Layout */
+        #app { display: none; height: 100vh; width: 100%; }
+        .shell { display: flex; height: 100vh; width: 100%; }
+        .side-bar { width: 250px; background: var(--sidebar); border-right: 1px solid #1a2234; padding: 30px 20px; display: flex; flex-direction: column; }
+        .nav-link { padding: 12px; border-radius: 8px; cursor: pointer; color: #444; margin-bottom: 10px; font-size: 13px; transition: 0.2s; }
+        .nav-link.active { background: rgba(0, 255, 65, 0.05); color: var(--green); border: 1px solid var(--green); }
+        .main-content { flex: 1; padding: 50px; overflow-y: auto; }
+
+        /* Collapsible Section Style */
+        .node-container { background: #0d1117; border: 1px solid #30363d; border-radius: 12px; overflow: hidden; margin-bottom: 20px; }
+        .node-header { background: #161b22; padding: 15px; color: var(--blue); font-size: 14px; font-weight: bold; }
+        .node-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid #1a2234; }
+        .node-row:last-child { border-bottom: none; }
+        .btn-open { background: transparent; border: 1px solid var(--blue); color: var(--blue); padding: 6px 15px; border-radius: 4px; cursor: pointer; font-size: 12px; transition: 0.2s; }
+        .btn-open:hover { background: var(--blue); color: #000; }
+    </style>
+</head>
+<body>
+
+<div id="gatekeeper">
+    <div class="auth-box">
+        <h1>$ Cyberwave</h1>
+        <label>> IDENTITY</label>
+        <input type="text" id="user_id" placeholder="..." autocomplete="off">
+        <label>> SEC_STRING</label>
+        <input type="password" id="sec_str" placeholder="..." autocomplete="off">
+        <button class="btn" onclick="registerAccount()">[CREATE_ID]</button>
+        <button class="btn btn-auth" onclick="login()">[EXECUTE_LOGIN]</button>
+    </div>
+</div>
+
+<div id="app">
+    <div class="shell">
+        <div class="side-bar">
+            <h2 style="color:var(--green); font-size: 20px; margin-bottom: 30px;">CYBERWAVE</h2>
+            <div class="nav-link active" id="nav-prox" onclick="switchTab('prox')">🎮 EDUCATIONAL GAMES</div>
+            <div id="nav-root" class="nav-link" style="display:none;" onclick="switchTab('root')">🔑 ROOT_ACCESS</div>
+            <div class="nav-link" style="margin-top: auto; color: var(--red);" onclick="location.reload()">TERMINATE</div>
+        </div>
+
+        <div class="main-content">
+            <div id="view-prox">
+                <h1 style="margin-bottom: 20px;">Curated Learning Modules</h1>
+                
+                <div class="node-container">
+                    <div class="node-header">📚 EDUCATIONAL GAME 1</div>
+                    <div class="node-row">
+                        <span>Module: Advanced Mathematics</span>
+                        <button class="btn-open" onclick="launch('https://overdih.netcrypto.org/')">LAUNCH GAME</button>
+                    </div>
+                    <div class="node-row">
+                        <span>Module: Logic & Strategy</span>
+                        <button class="btn-open" onclick="launch('https://mathedu.netcrypto.org/')">LAUNCH GAME</button>
+                    </div>
+                </div>
+
+                <div class="node-container">
+                    <div class="node-header">🧪 SCIENCE SIMULATIONS</div>
+                    <div class="node-row">
+                        <span>Simulation: Physics Lab</span>
+                        <button class="btn-open" onclick="launch('https://google.com')">OPEN NODE</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-root" style="display:none;">
+                <h1 style="color:var(--gold); margin-bottom: 20px;">Identity Database</h1>
+                <div id="user-db" class="node-container" style="padding:10px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const ROOT_USER = "_techrobyte";
+    const ROOT_PASS = "_techyy";
+
+    // Panic Key (ESC) to Classroom
+    window.addEventListener('keydown', (e) => {
+        if (e.key === "Escape") {
+            window.open("https://classroom.google.com", "_top");
+        }
+    });
+
+    function registerAccount() {
+        const u = document.getElementById('user_id').value.trim();
+        const p = document.getElementById('sec_str').value;
+        if(!u || !p) return;
+        localStorage.setItem('cw_' + u, btoa(p));
+        alert("Identity Registered.");
+    }
+
+    function login() {
+        const u = document.getElementById('user_id').value.trim();
+        const p = document.getElementById('sec_str').value;
+        if (u === ROOT_USER && p === ROOT_PASS) { return enterApp(true); }
+        const stored = localStorage.getItem('cw_' + u);
+        if (stored && atob(stored) === p) { return enterApp(false); }
+        alert("ACCESS DENIED");
+    }
+
+    function enterApp(isRoot) {
+        document.getElementById('gatekeeper').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        if (isRoot) {
+            document.getElementById('nav-root').style.display = 'block';
+            renderUsers();
+        }
+    }
+
+    function switchTab(t) {
+        document.getElementById('view-prox').style.display = (t === 'prox') ? 'block' : 'none';
+        document.getElementById('view-root').style.display = (t === 'root') ? 'block' : 'none';
+        document.getElementById('nav-prox').className = (t === 'prox') ? 'nav-link active' : 'nav-link';
+        document.getElementById('nav-root').className = (t === 'root') ? 'nav-link active' : 'nav-link';
+    }
+
+    function launch(url) {
+        // Using _top to ensure it breaks out of any frames
+        window.open(url, '_top');
+    }
+
+    function renderUsers() {
+        const list = document.getElementById('user-db');
+        list.innerHTML = `<div style="padding:15px; color:var(--gold);">👑 ${ROOT_USER} [ROOT]</div>`;
+        for (let i = 0; i < localStorage.length; i++) {
+            const k = localStorage.key(i);
+            if (k.startsWith('cw_')) {
+                const u = k.replace('cw_', '');
+                const p = atob(localStorage.getItem(k));
+                list.innerHTML += `<div style="padding:15px; display:flex; justify-content:space-between; border-bottom:1px solid #1a2234;"><span>$ ${u} | PW: ${p}</span><button style="color:red; background:none; border:none; cursor:pointer;" onclick="delUser('${u}')">DEL</button></div>`;
+            }
+        }
+    }
+
+    function delUser(u) { localStorage.removeItem('cw_' + u); renderUsers(); }
+</script>
+</body>
+</html>
