@@ -13,7 +13,7 @@
         * { box-sizing: border-box; font-family: 'Lexend', sans-serif; margin: 0; padding: 0; }
         body, html { background: var(--bg); color: #fff; height: 100vh; overflow: hidden; }
 
-        /* Security Gate */
+        /* Gatekeeper (Login Screen) */
         #gatekeeper { display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; position: fixed; top: 0; left: 0; z-index: 9999; background: var(--bg); }
         .auth-box { width: 400px; padding: 40px; background: #010204; border: 1px solid #161b22; border-radius: 4px; text-align: center; border-top: 4px solid var(--green); }
         input { width: 100%; padding: 14px; background: #000; border: 1px solid #30363d; color: var(--green); border-radius: 4px; margin-bottom: 12px; outline: none; font-size: 12px; }
@@ -29,16 +29,32 @@
         /* Chat Section */
         .chat-container { flex: 1; margin-top: 25px; background: #000; border: 1px solid #161b22; border-radius: 4px; display: flex; flex-direction: column; }
         .chat-title { background: #161b22; color: var(--blue); font-size: 9px; padding: 8px; text-align: center; font-weight: bold; }
-        .chat-embed { flex: 1; display: flex; align-items: center; justify-content: center; color: #161b22; font-size: 10px; }
+        .chat-embed { flex: 1; display: flex; align-items: center; justify-content: center; color: #161b22; font-size: 10px; text-align: center; }
 
         .main-content { flex: 1; padding: 60px; overflow-y: auto; background-image: radial-gradient(#161b22 1px, transparent 1px); background-size: 30px 30px; }
         .status-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 1px solid #30363d; padding-bottom: 20px; }
         
-        .node-card { background: rgba(13, 17, 23, 0.9); border: 1px solid #30363d; border-radius: 8px; padding: 25px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .btn-action { background: transparent; border: 1px solid var(--blue); color: var(--blue); padding: 10px 25px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .btn-action:hover { background: var(--blue); color: #000; box-shadow: 0 0 20px rgba(88, 166, 255, 0.4); }
+        /* --- COLLAPSIBLE STYLING --- */
+        .collapsible-container { background: rgba(13, 17, 23, 0.9); border: 1px solid #30363d; border-radius: 8px; overflow: hidden; margin-bottom: 15px; }
+        
+        /* The Header you click to open/close */
+        .collapsible-header { width: 100%; padding: 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: transparent; border: none; text-align: left; }
+        .arrow-icon { transition: transform 0.3s ease; color: var(--green); }
+        .is-open .arrow-icon { transform: rotate(180deg); } /* Arrow rotates when open */
 
-        /* GHOST SHIELD */
+        /* The Content Area */
+        .collapsible-content { display: none; padding: 0 20px 20px 20px; border-top: 1px solid #30363d; background: #080a10; }
+        
+        /* Game rows inside the content */
+        .game-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #161b22; }
+        
+        /* The specific "underline" style for the LAST link */
+        .game-row:last-child .game-title { text-decoration: underline; text-decoration-color: var(--blue); }
+        
+        .btn-launch { background: transparent; border: 1px solid var(--blue); color: var(--blue); padding: 8px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s; font-size: 12px; }
+        .btn-launch:hover { background: var(--blue); color: #000; box-shadow: 0 0 15px rgba(88, 166, 255, 0.4); }
+
+        /* GHOST SHIELD (Internal Play Layer) */
         #ghost-shield { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; }
         #ghost-shield iframe { width: 100%; height: 100%; border: none; }
     </style>
@@ -62,8 +78,8 @@
             <h2 style="color:var(--green); font-size: 14px;">TERMINAL_SESS</h2>
             <div class="chat-container">
                 <div class="chat-title">SECURE_COMMS</div>
-                <div class="chat-embed" id="chat-target">
-                    <p>SIGNAL_WAITING...</p>
+                <div class="chat-embed">
+                    <p>SIGNAL_WAITING...<br><br>[Cbox/Chatango placeholder]</p>
                 </div>
             </div>
             <button class="btn btn-reg" style="margin-top: 20px; border-color: var(--red); color: var(--red);" onclick="location.reload()">WIPE SESSION</button>
@@ -72,28 +88,36 @@
         <div class="main-content">
             <div class="status-header">
                 <div>
-                    <h1 style="font-size: 24px;">Educational Games</h1>
-                    <p style="color: var(--green); font-size: 10px;">ASSET STATUS: UNLOCKED</p>
+                    <h1 style="font-size: 24px;">Terminal Assets</h1>
+                    <p style="color: var(--green); font-size: 10px;">STATUS: ACTIVE</p>
                 </div>
-                <div style="text-align: right; color: #30363d; font-size: 10px;">
-                    IP: PROTECTED<br>DNS: ENCRYPTED
-                </div>
+                <div style="text-align: right; color: #30363d; font-size: 10px;"> IP: PROTECTED<br>DNS: ENCRYPTED </div>
             </div>
 
-            <div class="node-card">
-                <div>
-                    <h3 style="color: var(--blue);">Overcloaked</h3>
-                    <p style="color: #444; font-size: 11px;">Primary Stealth Logic Node</p>
-                </div>
-                <button class="btn-action" onclick="ghostLaunch('aHR0cHM6Ly9vdmVyZGloLm5ldGNyeXB0by5vcmcv')">OPEN TUNNEL</button>
-            </div>
+            <div class="collapsible-container">
+                <button class="collapsible-header" onclick="toggleCollapsible()">
+                    <span style="font-size: 16px; font-weight:bold;">Educational Games</span>
+                    <span class="arrow-icon">▼</span>
+                </button>
+                
+                <div class="collapsible-content" id="assets-list">
+                    <div class="game-row">
+                        <div class="game-title">
+                            <span style="color: var(--blue);">Overcloaked</span>
+                            <p style="color: #444; font-size: 10px;">Stealth Proxy Node 1</p>
+                        </div>
+                        <button class="btn-launch" onclick="ghostLaunch('https://overdih.netcrypto.org/')">OPEN TUNNEL</button>
+                    </div>
 
-            <div class="node-card">
-                <div>
-                    <h3 style="color: var(--blue);">Educational Game 2</h3>
-                    <p style="color: #444; font-size: 11px;">Secondary Calculation Module</p>
-                </div>
-                <button class="btn-action" onclick="ghostLaunch('aHR0cHM6Ly9tYXRoZWR1Lm5ldGNyeXB0by5vcmcv')">OPEN TUNNEL</button>
+                    <div class="game-row">
+                        <div class="game-title">
+                            <span style="color: var(--blue);">Overcloaked</span>
+                            <p style="color: #444; font-size: 10px;">Stealth Proxy Node 2</p>
+                        </div>
+                        <button class="btn-launch" onclick="ghostLaunch('https://mathedu.netcrypto.org/')">OPEN TUNNEL</button>
+                    </div>
+
+                    </div>
             </div>
 
             <div id="root-console" style="display:none; margin-top: 50px;">
@@ -117,7 +141,7 @@
         const p = document.getElementById('sec_str').value;
         if(!u || !p) return;
         localStorage.setItem('cw_' + u, btoa(p));
-        alert("ID Generated.");
+        alert("Identity Generated.");
     }
 
     function login() {
@@ -126,7 +150,7 @@
         if (u === ROOT_USER && p === ROOT_PASS) return enterApp(true);
         const stored = localStorage.getItem('cw_' + u);
         if (stored && atob(stored) === p) return enterApp(false);
-        alert("AUTH_FAIL");
+        alert("DENIED");
     }
 
     function enterApp(isRoot) {
@@ -138,8 +162,7 @@
         }
     }
 
-    function ghostLaunch(encodedUrl) {
-        const url = atob(encodedUrl);
+    function ghostLaunch(url) {
         const shield = document.getElementById('ghost-shield');
         const frame = document.getElementById('ghost-frame');
         shield.style.display = 'block';
@@ -149,6 +172,19 @@
     function closeGhost() {
         document.getElementById('ghost-shield').style.display = 'none';
         document.getElementById('ghost-frame').src = 'about:blank';
+    }
+
+    // THE COLLAPSIBLE LOGIC
+    function toggleCollapsible() {
+        const container = document.querySelector('.collapsible-container');
+        const content = document.getElementById('assets-list');
+        
+        container.classList.toggle('is-open'); // Rotates the arrow
+        if (content.style.display === "block") {
+            content.style.display = "none";
+        } else {
+            content.style.display = "block";
+        }
     }
 
     function renderUsers() {
@@ -165,13 +201,11 @@
 
     function delUser(u) { localStorage.removeItem('cw_' + u); renderUsers(); }
 
-    // THE PANIC SYSTEM
     window.addEventListener('keydown', (e) => {
         if (e.key === "Escape") {
             if (document.getElementById('ghost-shield').style.display === 'block') {
                 closeGhost();
             } else {
-                // Instantly teleport to Google Classroom
                 window.location.replace("https://classroom.google.com");
             }
         }
