@@ -2,113 +2,108 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Google Drive - Math Resources</title>
+    <title>Google Drive - Resources</title>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500&display=swap" rel="stylesheet">
     <style>
         :root { --green: #00ff41; --blue: #58a6ff; --bg: #0a0e1a; --sidebar: #05070f; --gold: #f4d03f; --red: #ff3333; }
-        * { box-sizing: border-box; font-family: 'Lexend', sans-serif; font-weight: 500; margin: 0; padding: 0; }
+        * { box-sizing: border-box; font-family: 'Lexend', sans-serif; margin: 0; padding: 0; }
         body, html { background: var(--bg); color: #fff; height: 100vh; overflow: hidden; }
 
         /* Login Screen */
-        #gatekeeper { display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; position: fixed; top: 0; left: 0; z-index: 100; background: var(--bg); }
-        .auth-box { width: 380px; padding: 40px; background: rgba(5, 7, 15, 0.95); border: 1px solid #1a2234; border-radius: 12px; box-shadow: 0 0 40px #000; }
-        h1 { color: var(--green); margin: 0 0 20px 0; font-size: 28px; }
-        label { display: block; color: var(--green); margin: 15px 0 5px 0; font-size: 10px; letter-spacing: 1px; }
-        input { width: 100%; padding: 12px; background: #000; border: 1px solid #1a2234; color: #fff; border-radius: 6px; outline: none; margin-bottom: 10px; }
-        .btn { width: 100%; padding: 12px; margin-top: 10px; border-radius: 6px; cursor: pointer; border: 2px solid var(--green); background: transparent; color: var(--green); font-weight: bold; transition: 0.2s; }
-        .btn-auth { border-color: var(--blue); color: var(--blue); }
+        #gatekeeper { display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; position: fixed; top: 0; left: 0; z-index: 999; background: var(--bg); }
+        .auth-box { width: 380px; padding: 40px; background: #05070f; border: 1px solid #1a2234; border-radius: 12px; text-align: center; }
+        input { width: 100%; padding: 12px; background: #000; border: 1px solid #1a2234; color: #fff; border-radius: 6px; margin-bottom: 15px; outline: none; }
+        .btn-login { width: 100%; padding: 12px; border-radius: 6px; cursor: pointer; border: 2px solid var(--blue); background: transparent; color: var(--blue); font-weight: bold; }
 
         /* App Layout */
         #app { display: none; height: 100vh; width: 100%; }
-        .shell { display: flex; height: 100vh; width: 100%; }
+        .shell { display: flex; height: 100vh; }
         .side-bar { width: 250px; background: var(--sidebar); border-right: 1px solid #1a2234; padding: 30px 20px; display: flex; flex-direction: column; }
-        .nav-link { padding: 12px; border-radius: 8px; cursor: pointer; color: #444; margin-bottom: 10px; font-size: 13px; transition: 0.2s; }
-        .nav-link.active { background: rgba(0, 255, 65, 0.05); color: var(--green); border: 1px solid var(--green); }
-        .main-content { flex: 1; padding: 50px; overflow-y: auto; }
+        .nav-link { padding: 12px; border-radius: 8px; cursor: pointer; color: #444; margin-bottom: 10px; transition: 0.2s; }
+        .nav-link.active { background: rgba(0, 255, 101, 0.05); color: var(--green); border: 1px solid var(--green); }
+        .main-content { flex: 1; padding: 50px; }
 
-        .node-container { background: #0d1117; border: 1px solid #30363d; border-radius: 12px; overflow: hidden; margin-bottom: 20px; }
-        .node-header { background: #161b22; padding: 15px; color: var(--blue); font-size: 14px; font-weight: bold; }
-        .node-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid #1a2234; }
-        .btn-open { background: transparent; border: 1px solid var(--blue); color: var(--blue); padding: 8px 20px; border-radius: 4px; cursor: pointer; font-size: 12px; transition: 0.2s; font-weight: bold; }
-        .btn-open:hover { background: var(--blue); color: #000; }
+        /* Game Containers */
+        .node-container { background: #0d1117; border: 1px solid #30363d; border-radius: 12px; overflow: hidden; }
+        .node-row { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid #1a2234; }
+        .btn-launch { background: var(--blue); color: #000; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; border: none; }
+
+        /* INTERNAL SHIELD (This keeps the game inside Cyberwave) */
+        #shield { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 1000; }
+        #shield iframe { width: 100%; height: 100%; border: none; }
+        .close-shield { position: fixed; top: 20px; right: 20px; background: var(--red); color: #fff; padding: 10px; border-radius: 5px; cursor: pointer; z-index: 1001; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div id="gatekeeper">
     <div class="auth-box">
-        <h1>$ Cyberwave</h1>
-        <label>> IDENTITY</label>
-        <input type="text" id="user_id" placeholder="..." autocomplete="off">
-        <label>> SEC_STRING</label>
-        <input type="password" id="sec_str" placeholder="..." autocomplete="off">
-        <button class="btn" onclick="registerAccount()">[CREATE_ID]</button>
-        <button class="btn btn-auth" onclick="login()">[EXECUTE_LOGIN]</button>
+        <h1 style="color:var(--green); margin-bottom: 20px;">CYBERWAVE</h1>
+        <input type="text" id="user_id" placeholder="IDENTITY">
+        <input type="password" id="sec_str" placeholder="SEC_STRING">
+        <button class="btn-login" onclick="login()">EXECUTE_LOGIN</button>
     </div>
 </div>
 
 <div id="app">
     <div class="shell">
         <div class="side-bar">
-            <h2 style="color:var(--green); font-size: 20px; margin-bottom: 30px;">CYBERWAVE</h2>
+            <h2 style="color:var(--green); margin-bottom: 30px;">CYBERWAVE</h2>
             <div class="nav-link active">🎮 EDUCATIONAL GAMES</div>
-            <div id="nav-root" class="nav-link" style="display:none;" onclick="switchTab('root')">🔑 ROOT_ACCESS</div>
             <div class="nav-link" style="margin-top: auto; color: var(--red);" onclick="location.reload()">TERMINATE</div>
         </div>
-
         <div class="main-content">
-            <div id="view-prox">
-                <h1 style="margin-bottom: 20px;">Curated Learning Modules</h1>
-                <div class="node-container">
-                    <div class="node-header">📚 EDUCATIONAL GAME 1</div>
-                    <div class="node-row">
-                        <span>Module: Advanced Mathematics</span>
-                        <button class="btn-open" onclick="launch('https://overdih.netcrypto.org/')">LAUNCH GAME</button>
-                    </div>
-                    <div class="node-row">
-                        <span>Module: Logic & Strategy</span>
-                        <button class="btn-open" onclick="launch('https://mathedu.netcrypto.org/')">LAUNCH GAME</button>
-                    </div>
+            <h1>Curated Learning Modules</h1>
+            <br>
+            <div class="node-container">
+                <div class="node-row">
+                    <span>Module: Advanced Mathematics</span>
+                    <button class="btn-launch" onclick="launch('https://overdih.netcrypto.org/')">PLAY INTERNAL</button>
                 </div>
-            </div>
-
-            <div id="view-root" style="display:none;">
-                <h1 style="color:var(--gold); margin-bottom: 20px;">Identity Database</h1>
-                <div id="user-db" class="node-container" style="padding:10px;"></div>
             </div>
         </div>
     </div>
+</div>
+
+<div id="shield">
+    <div class="close-shield" onclick="closeShield()">CLOSE (ESC)</div>
+    <iframe id="shield-frame"></iframe>
 </div>
 
 <script>
     const ROOT_USER = "_techrobyte";
     const ROOT_PASS = "_techyy";
 
+    function login() {
+        const u = document.getElementById('user_id').value;
+        const p = document.getElementById('sec_str').value;
+        if (u === ROOT_USER && p === ROOT_PASS) {
+            document.getElementById('gatekeeper').style.display = 'none';
+            document.getElementById('app').style.display = 'block';
+        } else {
+            alert("DENIED");
+        }
+    }
+
+    function launch(url) {
+        document.getElementById('shield-frame').src = url;
+        document.getElementById('shield').style.display = 'block';
+    }
+
+    function closeShield() {
+        document.getElementById('shield').style.display = 'none';
+        document.getElementById('shield-frame').src = '';
+    }
+
     window.addEventListener('keydown', (e) => {
         if (e.key === "Escape") {
-            window.open("https://classroom.google.com", "_top");
+            if (document.getElementById('shield').style.display === 'block') {
+                closeShield();
+            } else {
+                window.location.replace("https://classroom.google.com");
+            }
         }
     });
-
-    function registerAccount() {
-        const u = document.getElementById('user_id').value.trim();
-        const p = document.getElementById('sec_str').value;
-        if(!u || !p) return;
-        localStorage.setItem('cw_' + u, btoa(p));
-        alert("Identity Registered.");
-    }
-
-    function login() {
-        const u = document.getElementById('user_id').value.trim();
-        const p = document.getElementById('sec_str').value;
-        if (u === ROOT_USER && p === ROOT_PASS) { return enterApp(true); }
-        const stored = localStorage.getItem('cw_' + u);
-        if (stored && atob(stored) === p) { return enterApp(false); }
-        alert("ACCESS DENIED");
-    }
-
-    function enterApp(isRoot) {
-        document.getElementById('gatekeeper').style.display = 'none';
-        document.getElementById('app').style.display = 'block';
-        if (isRoot) {
-            document.getElementById('nav-root').style.display = 'block';
+</script>
+</body>
+</html>
